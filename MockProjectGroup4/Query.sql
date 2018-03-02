@@ -7,3 +7,5 @@ CREATE TABLE Account
 	EmployeeId INT REFERENCES Employees(EmployeeId)
 
 )
+
+INSERT INTO Account (Username,Password,CustomerId) VALUES ('user1','user1','ALFKI')

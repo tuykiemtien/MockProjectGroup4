@@ -14,11 +14,11 @@ namespace DAO.Controllers
         private NorthwindEntities db = new NorthwindEntities();
 
         //login customer
-        public IHttpActionResult GetLoginCustomer(AccountDTO account)
+        public IHttpActionResult GetLoginCustomer(string username, string password)
         {
             try
             {
-                AccountDTO customerLogin = db.Accounts.Where(s => s.Username == account.Username && s.Password == account.Password).Select(c => new AccountDTO()
+                AccountDTO customerLogin = db.Accounts.Where(s => s.Username == username && s.Password == password).Select(c => new AccountDTO()
                 {
                     CustomerId = c.CustomerId,
                     Customer = db.Customers.Where(a => a.CustomerID == c.CustomerId).Select(b => new CustomerDTO()
@@ -47,6 +47,32 @@ namespace DAO.Controllers
             }
            
         }
-
+        
+        [HttpGet]
+        public IHttpActionResult Get()
+        {
+            List<AccountDTO> customerLogin = db.Accounts.Select(c => new AccountDTO()
+            {
+                CustomerId = c.CustomerId,
+                Customer = db.Customers.Where(a => a.CustomerID == c.CustomerId).Select(b => new CustomerDTO()
+                {
+                    Address = b.Address,
+                    City = b.City,
+                    CustomerID = b.CustomerID,
+                    CompanyName = b.CompanyName,
+                    ContactName = b.ContactName,
+                    ContactTitle = b.ContactTitle
+                }).FirstOrDefault(),
+                Username = c.Username
+            }).ToList();
+            if (customerLogin != null)
+            {
+                return Ok(customerLogin);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
     }
 }
