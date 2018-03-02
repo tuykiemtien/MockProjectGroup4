@@ -34,6 +34,9 @@
                     else {
                         $('#login-valid').text('Invalid username or password');
                     }
+                },
+                error: function () {
+                    $('#login-valid').text('Error. Please reload your website');
                 }
             });
         };
